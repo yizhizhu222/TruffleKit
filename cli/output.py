@@ -46,13 +46,10 @@ def _grade_color(grade: str) -> str:
 
 def print_banner():
     """打印品牌标识——仪式感"""
-    print()
-    print("  ╭────────────────────────────────────────────────────╮")
-    print("  │                                                    │")
-    print(f"  │   🍄  TruffleKit  AI Code Audit  v{__version__:<11} │")
-    print("  │   确定性安全审查 · 零AI幻觉 · 开源规则             │")
-    print("  │                                                    │")
-    print("  ╰────────────────────────────────────────────────────╯")
+    print(f"           TruffleKit v{__version__}")
+    print(f" ▐▛▀▀▀▀▀▜▌   确定性安全审查 · 22 条规则")
+    print(f"▝▜███████▛▘  Zero AI · Open Source")
+    print(f"  ▘▘   ▝▝    trufflekit.com")
     print()
 
 
@@ -310,9 +307,7 @@ def print_explain(rule_id: str):
     sev = rule["severity"]
     sev_icon = _color(sev)
     print()
-    print(f"  {'═' * max(TERM_WIDTH - 4, 30)}")
-    print(f"  {rule_id}  {rule['title']}")
-    print(f"  {'═' * max(TERM_WIDTH - 4, 30)}")
+    print(f"  ── {rule_id}  {rule['title']}  ──")
     print(f"  分类:    {rule['category']}")
     print(f"  等级:    {sev_icon} {sev.upper()}")
     print()
