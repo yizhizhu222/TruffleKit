@@ -1,5 +1,12 @@
-# ── 只跟踪 CLI 相关文件 ──────────────────────────────
-# 其他目录是网站和后台服务，不属于 CLI 仓库
+/*
+!/cli/
+!/README.md
+!/pyproject.toml
+!/SECURITY.md
+!/SETUP_GITHUB.md
+!/.gitignore
+!/.gitattributes
+!/.github/
 
 # Python 构建产物
 __pycache__/

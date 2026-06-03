@@ -1,0 +1,9 @@
+# 语法高亮
+*.py linguist-language=Python
+*.ts linguist-language=TypeScript
+*.tsx linguist-language=TypeScript
+*.js linguist-language=JavaScript
+*.md linguist-detectable=true
+
+# 规则文档作为项目文档展示
+cli/rules/** linguist-documentation=false

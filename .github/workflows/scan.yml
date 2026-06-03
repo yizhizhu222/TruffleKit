@@ -1,0 +1,48 @@
+name: TruffleKit Security Scan
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  schedule:
+    - cron: '0 6 * * 1'  # 每周一早上 6 点
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install TruffleKit CLI
+        run: pip install trufflekit
+
+      - name: Run security scan
+        run: truffle scan . --json > scan-report.json
+
+      - name: Check for critical issues
+        run: |
+          CRITICAL=$(python3 -c "
+import json
+with open('scan-report.json') as f:
+    data = json.load(f)
+print(data['severity_counts'].get('critical', 0))
+          ")
+          echo "Critical issues found: $CRITICAL"
+          if [ "$CRITICAL" -gt "0" ]; then
+            echo "❌ Critical security issues detected! Check scan-report.json"
+            exit 1
+          fi
+          echo "✅ No critical issues"
+
+      - name: Upload scan report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: truffle-scan-report
+          path: scan-report.json
