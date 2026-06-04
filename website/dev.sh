@@ -12,12 +12,12 @@ NC='\033[0m'
 # ── Config ─────────────────────────────────────────────────────────────────────
 BACKEND_PORT="${BACKEND_PORT:-8000}"
 FRONTEND_PORT="${FRONTEND_PORT:-5173}"
-BACKEND_DIR="$(dirname "$0")/platform-backend"
-FRONTEND_DIR="$(dirname "$0")/Nexus AI"
+BACKEND_DIR="$(dirname "$0")/backend"
+FRONTEND_DIR="$(dirname "$0")/frontend"
 
 # ── Checks ──────────────────────────────────────────────────────────────────────
 if [ ! -d "$BACKEND_DIR/.venv" ] && [ ! -f "$BACKEND_DIR/requirements.txt" ]; then
-    echo -e "${RED}Error: platform-backend directory not found at $BACKEND_DIR${NC}"
+    echo -e "${RED}Error: backend directory not found at $BACKEND_DIR${NC}"
     exit 1
 fi
 

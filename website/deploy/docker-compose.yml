@@ -4,14 +4,14 @@ services:
   # ── Backend (FastAPI + Python) ─────────────────────────────────────────────
   backend:
     build:
-      context: ./platform-backend
+      context: ./backend
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
     volumes:
-      - ./platform-backend:/app
-      - ./platform-backend/data:/app/data
-      - ./platform-backend/.env:/app/.env
+      - ./backend:/app
+      - ./backend/data:/app/data
+      - ./backend/.env:/app/.env
     environment:
       - DEBUG=true
       - LOG_LEVEL=DEBUG
@@ -25,14 +25,14 @@ services:
   # ── Frontend (Vite dev server, for development) ────────────────────────────
   frontend:
     build:
-      context: ./Nexus AI
+      context: ./frontend
       dockerfile: Dockerfile.dev
     ports:
       - "5173:5173"
     volumes:
-      - ./Nexus AI/src:/app/src
-      - ./Nexus AI/public:/app/public
-      - ./Nexus AI/index.html:/app/index.html
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+      - ./frontend/index.html:/app/index.html
     environment:
       - VITE_HOST=0.0.0.0
     depends_on:

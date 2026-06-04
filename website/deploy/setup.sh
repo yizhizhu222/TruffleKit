@@ -6,14 +6,14 @@ echo "=== Nexus AI Platform — Production Deployment ==="
 
 # ── 1. Build frontend ──────────────────────────────────────────────────────────
 echo "[1/6] Building frontend..."
-cd "$(dirname "$0")/../Nexus AI"
+cd "$(dirname "$0")/../frontend"
 npm ci
 npm run build
 echo "  → dist/ ready"
 
 # ── 2. Install backend deps ───────────────────────────────────────────────────
 echo "[2/6] Installing backend dependencies..."
-cd ../platform-backend
+cd ../backend
 pip install -r requirements.txt --no-cache-dir
 
 # ── 3. Build C++ engine ───────────────────────────────────────────────────────
@@ -42,8 +42,8 @@ fi
 # ── 6. Print summary ──────────────────────────────────────────────────────────
 echo "[6/6] Done!"
 echo ""
-echo "  Start backend:  cd platform-backend && uvicorn app.main:app --host 0.0.0.0 --port 8000"
-echo "  Serve frontend: nginx (serve /Nexus AI/dist)"
+echo "  Start backend:  cd backend && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+echo "  Serve frontend: nginx (serve /frontend/dist)"
 echo "  WebSocket:      built into backend at /ws/{session_id}"
 echo "  API docs:       http://localhost:8000/docs"
 echo "  Login bypass:   000000 (when DEBUG=true)"

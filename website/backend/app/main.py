@@ -43,7 +43,7 @@ from app.api.notifications import router as notifications_router
 from app.db import init_app_db
 
 # ── Frontend dist path ─────────────────────────────────────────────────────
-FRONTEND_DIST = Path(__file__).resolve().parent.parent.parent / "Nexus AI" / "dist"
+FRONTEND_DIST = Path(__file__).resolve().parent.parent.parent / "frontend" / "dist"
 
 # ── Config from environment ──────────────────────────────────────────────────
 PROJECT_NAME    = os.getenv("PROJECT_NAME", "Truffle AI Platform")

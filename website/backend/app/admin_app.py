@@ -24,7 +24,7 @@ from app.api.admin import init_admin_db, router as admin_router
 from app.db import init_app_db, get_conn as get_app_conn
 
 # ── Frontend dist path (same as main app) ───────────────────
-FRONTEND_DIST = Path(__file__).resolve().parent.parent.parent / "Nexus AI" / "dist"
+FRONTEND_DIST = Path(__file__).resolve().parent.parent.parent / "frontend" / "dist"
 
 # ── Load .env ────────────────────────────────────────────────
 env_path = Path(__file__).resolve().parent.parent / ".env"

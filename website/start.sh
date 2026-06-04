@@ -9,8 +9,8 @@ RED='\033[0;31m'
 NC='\033[0m'
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-BACKEND_DIR="$SCRIPT_DIR/platform-backend"
-FRONTEND_DIR="$SCRIPT_DIR/Nexus AI"
+BACKEND_DIR="$SCRIPT_DIR/backend"
+FRONTEND_DIR="$SCRIPT_DIR/frontend"
 ENV_FILE="$SCRIPT_DIR/.env"
 PORT=8001
 ADMIN_PORT=8002
