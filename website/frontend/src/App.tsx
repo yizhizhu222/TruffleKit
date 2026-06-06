@@ -4,7 +4,6 @@ import Dashboard from './components/Dashboard'
 import AdminPage from './components/AdminPage'
 import LandingPage from './components/LandingPage'
 import { LanguageProvider } from './context/LanguageContext'
-import { apiFetch } from './lib/api'
 
 const IS_ADMIN_PORT = window.location.port === '8002'
 
@@ -23,83 +22,20 @@ export default function App() {
   const [authLoading, setAuthLoading] = useState(true)
   const path = usePath()
 
-  // On mount, check for existing JWT and auto-login if valid
   useEffect(() => {
     const token = localStorage.getItem('nexus-auth-token')
-
-    // ── PWA: listen for service worker updates and reload ──
-    if ('serviceWorker' in navigator) {
-      // Check for SW updates every time the page loads
-      navigator.serviceWorker.getRegistration().then(reg => {
-        if (reg) {
-          reg.addEventListener('updatefound', () => {
-            const newSW = reg.installing
-            if (newSW) {
-              newSW.addEventListener('statechange', () => {
-                // New SW activated → reload to get fresh content
-                if (newSW.state === 'activated') {
-                  window.location.reload()
-                }
-              })
-            }
-          })
-        }
-      })
-      // Also re-check on page focus (user comes back to tab)
-      let checking = false
-      window.addEventListener('focus', () => {
-        if (!checking) {
-          checking = true
-          navigator.serviceWorker.getRegistration().then(reg => {
-            if (reg) reg.update()
-          }).finally(() => { checking = false })
-        }
-      })
-    }
-
-    // Admin port: auto-login with admin backend (no password needed)
     if (IS_ADMIN_PORT) {
-      const doAutoLogin = async () => {
-        try {
-          const { data } = await apiFetch('/api/v1/admin/auto-login')
-          localStorage.setItem('nexus-auth-token', data.access_token)
-          localStorage.setItem('nexus-auth-role', data.role || 'admin')
-          setIsLoggedIn(true)
-        } catch {
-          // Ignore — show login page if auto-login fails
-        }
-        setAuthLoading(false)
-      }
-      doAutoLogin()
-      return
-    }
-
-    // Normal port: check existing JWT
-    if (!token) {
+      setIsLoggedIn(true)
       setAuthLoading(false)
       return
     }
-    apiFetch('/api/v1/auth/verify', {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then(({ data }) => {
-        setIsLoggedIn(true)
-        if (data.user?.role) localStorage.setItem('nexus-auth-role', data.user.role)
-      })
-      .catch(() => {
-        localStorage.removeItem('nexus-auth-token')
-        localStorage.removeItem('nexus-auth-role')
-      })
-      .finally(() => setAuthLoading(false))
+    if (token) {
+      setIsLoggedIn(true)
+    }
+    setAuthLoading(false)
   }, [])
 
-  const handleLoginSuccess = () => {
-    setIsLoggedIn(true)
-  }
-
-  const navigateToLogin = () => {
-    window.location.pathname = '/login'
-  }
+  const handleLoginSuccess = () => { setIsLoggedIn(true) }
 
   if (authLoading) {
     return (
@@ -110,29 +46,15 @@ export default function App() {
   }
 
   if (isLoggedIn) {
-    // Admin port: render AdminPage directly (no sidebar, no landing page)
     if (IS_ADMIN_PORT) {
-      return (
-        <LanguageProvider>
-          <AdminPage />
-        </LanguageProvider>
-      )
+      return <LanguageProvider><AdminPage /></LanguageProvider>
     }
-    return (
-      <LanguageProvider>
-        <Dashboard />
-      </LanguageProvider>
-    )
+    return <LanguageProvider><Dashboard /></LanguageProvider>
   }
 
-  // Not logged in — show landing page at /, login form at /login
   return (
     <LanguageProvider>
-      {path === '/login' ? (
-        <Login onLoginSuccess={handleLoginSuccess} />
-      ) : (
-        <LandingPage />
-      )}
+      {path === '/login' ? <Login onLoginSuccess={handleLoginSuccess} /> : <LandingPage />}
     </LanguageProvider>
   )
 }
